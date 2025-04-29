@@ -1,14 +1,11 @@
-
 import React from 'react';
 import { Zap, Users, Globe, Award } from 'lucide-react';
-
 const About = () => {
-  return (
-    <section id="about" className="section bg-[#0e0e10] text-white">
+  return <section id="about" className="section bg-[#0e0e10] text-white">
       <div className="container mx-auto">
         <div className="mb-16 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            About <span className="fire-text">TechShethra</span>
+            About <span className="fire-text text-slate-50">TechShethra</span>
           </h2>
           <p className="text-lg text-gray-300 max-w-3xl mx-auto">
             A premier technical symposium that brings together innovators, thought leaders, and tech enthusiasts
@@ -20,11 +17,7 @@ const About = () => {
           <div>
             <div className="relative">
               <div className="bg-gradient-fire rounded-lg p-1">
-                <img 
-                  src="https://images.unsplash.com/photo-1498050108023-c5249f4df085" 
-                  alt="Tech Conference" 
-                  className="rounded-lg w-full h-auto"
-                />
+                <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085" alt="Tech Conference" className="rounded-lg w-full h-auto" />
               </div>
               <div className="absolute -bottom-10 -right-10 bg-black p-4 rounded-lg animate-float hidden md:block">
                 <div className="text-gold font-bold text-4xl">8+</div>
@@ -85,8 +78,6 @@ const About = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default About;
