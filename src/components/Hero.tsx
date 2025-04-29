@@ -1,5 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 import { ArrowRight } from 'lucide-react';
+
 const Hero = () => {
   const eventDate = new Date('2025-05-09T09:00:00');
   const [timeLeft, setTimeLeft] = useState({
@@ -8,6 +10,7 @@ const Hero = () => {
     minutes: 0,
     seconds: 0
   });
+
   useEffect(() => {
     const calculateTimeLeft = () => {
       const difference = +eventDate - +new Date();
@@ -24,6 +27,7 @@ const Hero = () => {
     const timer = setInterval(calculateTimeLeft, 1000);
     return () => clearInterval(timer);
   }, []);
+
   return <div className="min-h-screen relative flex flex-col items-center justify-center text-white px-4 lg:px-8">
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-black via-black/95 to-black z-10 rounded-none"></div>
@@ -37,7 +41,7 @@ const Hero = () => {
           </span>
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-orbitron font-bold mb-4">
             <span className="text-amber-500">TECH</span>
-            <span className="fire-text text-slate-50">SHETHRA</span>
+            <span className="bg-gradient-to-r from-[#FF4500] via-[#FFA500] to-[#FFD700] bg-clip-text text-transparent">SHETHRA</span>
           </h1>
           <p className="text-xl md:text-2xl lg:text-3xl text-gray-300 max-w-3xl mx-auto mb-8">
             Igniting Innovation • Fueling the Future of Technology
@@ -53,7 +57,7 @@ const Hero = () => {
           </button>
         </div>
         
-        <div className="flex flex-wrap justify-center gap-4 mt-12">
+        <div className="flex flex-wrap justify-center gap-4 mt-12 mb-16">
           <div className="countdown-item">
             <div className="text-3xl md:text-4xl font-bold text-gold">{timeLeft.days}</div>
             <div className="text-sm">Days</div>
@@ -73,12 +77,13 @@ const Hero = () => {
         </div>
       </div>
       
-      {/* Wave divider */}
+      {/* Wave divider - positioned lower so it doesn't hide the timer */}
       <div className="absolute bottom-0 left-0 w-full overflow-hidden z-20">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="w-full h-auto">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 220" className="w-full h-auto">
           <path fill="#0e0e10" fillOpacity="1" d="M0,224L48,224C96,224,192,224,288,186.7C384,149,480,75,576,74.7C672,75,768,149,864,176C960,203,1056,181,1152,154.7C1248,128,1344,96,1392,80L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
         </svg>
       </div>
     </div>;
 };
+
 export default Hero;
