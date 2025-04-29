@@ -1,16 +1,13 @@
-
 import React from 'react';
 import { Calendar, Clock, Users } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
 const Registration = () => {
-  return (
-    <section id="registration" className="section bg-[#121215] text-white">
+  return <section id="registration" className="section bg-[#121215] text-white">
       <div className="container mx-auto">
         <div className="mb-16 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Register <span className="fire-text">Now</span>
+            Register <span className="fire-text text-slate-50">Now</span>
           </h2>
           <p className="text-lg text-gray-300 max-w-3xl mx-auto">
             Secure your spot at TechShethra 2025 and be part of this transformative tech experience.
@@ -24,57 +21,30 @@ const Registration = () => {
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="firstName">First Name</Label>
-                  <Input 
-                    id="firstName" 
-                    placeholder="Enter your first name" 
-                    className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
-                    required
-                  />
+                  <Input id="firstName" placeholder="Enter your first name" className="bg-white/5 border-white/10 text-white placeholder:text-gray-500" required />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="lastName">Last Name</Label>
-                  <Input 
-                    id="lastName" 
-                    placeholder="Enter your last name" 
-                    className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
-                    required
-                  />
+                  <Input id="lastName" placeholder="Enter your last name" className="bg-white/5 border-white/10 text-white placeholder:text-gray-500" required />
                 </div>
               </div>
               
               <div className="space-y-2">
                 <Label htmlFor="email">Email Address</Label>
-                <Input 
-                  id="email" 
-                  type="email" 
-                  placeholder="your@email.com" 
-                  className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
-                  required
-                />
+                <Input id="email" type="email" placeholder="your@email.com" className="bg-white/5 border-white/10 text-white placeholder:text-gray-500" required />
               </div>
               
               <div className="space-y-2">
                 <Label htmlFor="company">Company/Institution</Label>
-                <Input 
-                  id="company" 
-                  placeholder="Your organization name" 
-                  className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
-                />
+                <Input id="company" placeholder="Your organization name" className="bg-white/5 border-white/10 text-white placeholder:text-gray-500" />
               </div>
               
               <div className="space-y-2">
                 <Label htmlFor="role">Job Title/Role</Label>
-                <Input 
-                  id="role" 
-                  placeholder="Your professional role" 
-                  className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
-                />
+                <Input id="role" placeholder="Your professional role" className="bg-white/5 border-white/10 text-white placeholder:text-gray-500" />
               </div>
               
-              <button 
-                type="submit" 
-                className="btn-gold w-full py-3 rounded-full font-bold text-black hover:bg-amber-400 transition-all duration-300"
-              >
+              <button type="submit" className="btn-gold w-full py-3 rounded-full font-bold text-black hover:bg-amber-400 transition-all duration-300">
                 Register Now
               </button>
             </form>
@@ -142,8 +112,6 @@ const Registration = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default Registration;

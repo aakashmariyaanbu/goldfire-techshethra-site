@@ -1,14 +1,11 @@
-
 import React from 'react';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
-
 const Contact = () => {
-  return (
-    <section id="contact" className="section bg-[#121215] text-white">
+  return <section id="contact" className="section bg-[#121215] text-white">
       <div className="container mx-auto">
         <div className="mb-16 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Get in <span className="fire-text">Touch</span>
+            Get in <span className="fire-text text-slate-50">Touch</span>
           </h2>
           <p className="text-lg text-gray-300 max-w-3xl mx-auto">
             Have questions about TechShethra? Our team is here to help you.
@@ -24,48 +21,25 @@ const Contact = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium mb-2">Full Name</label>
-                    <input 
-                      type="text" 
-                      id="name" 
-                      className="w-full bg-white/10 border border-white/20 rounded-lg p-3 focus:outline-none focus:border-gold"
-                      placeholder="Enter your name"
-                    />
+                    <input type="text" id="name" className="w-full bg-white/10 border border-white/20 rounded-lg p-3 focus:outline-none focus:border-gold" placeholder="Enter your name" />
                   </div>
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium mb-2">Email Address</label>
-                    <input 
-                      type="email" 
-                      id="email" 
-                      className="w-full bg-white/10 border border-white/20 rounded-lg p-3 focus:outline-none focus:border-gold"
-                      placeholder="Enter your email"
-                    />
+                    <input type="email" id="email" className="w-full bg-white/10 border border-white/20 rounded-lg p-3 focus:outline-none focus:border-gold" placeholder="Enter your email" />
                   </div>
                 </div>
                 
                 <div>
                   <label htmlFor="subject" className="block text-sm font-medium mb-2">Subject</label>
-                  <input 
-                    type="text" 
-                    id="subject" 
-                    className="w-full bg-white/10 border border-white/20 rounded-lg p-3 focus:outline-none focus:border-gold"
-                    placeholder="Enter subject"
-                  />
+                  <input type="text" id="subject" className="w-full bg-white/10 border border-white/20 rounded-lg p-3 focus:outline-none focus:border-gold" placeholder="Enter subject" />
                 </div>
                 
                 <div>
                   <label htmlFor="message" className="block text-sm font-medium mb-2">Message</label>
-                  <textarea
-                    id="message"
-                    rows={4}
-                    className="w-full bg-white/10 border border-white/20 rounded-lg p-3 focus:outline-none focus:border-gold"
-                    placeholder="Enter your message"
-                  ></textarea>
+                  <textarea id="message" rows={4} className="w-full bg-white/10 border border-white/20 rounded-lg p-3 focus:outline-none focus:border-gold" placeholder="Enter your message"></textarea>
                 </div>
                 
-                <button 
-                  type="submit"
-                  className="btn-gold rounded-full px-6 py-3 font-bold flex items-center gap-2"
-                >
+                <button type="submit" className="btn-gold rounded-full px-6 py-3 font-bold flex items-center gap-2">
                   Send Message <Send size={18} />
                 </button>
               </form>
@@ -143,8 +117,6 @@ const Contact = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default Contact;

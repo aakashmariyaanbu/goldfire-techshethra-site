@@ -1,7 +1,5 @@
-
 import React from 'react';
 import { ArrowUp } from 'lucide-react';
-
 const Footer = () => {
   const scrollToTop = () => {
     window.scrollTo({
@@ -9,15 +7,13 @@ const Footer = () => {
       behavior: 'smooth'
     });
   };
-
-  return (
-    <footer className="bg-black text-white">
+  return <footer className="bg-black text-white">
       <div className="container mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 py-12 px-4">
           <div>
             <h3 className="text-2xl font-orbitron font-bold mb-4">
               <span className="text-gold">TECH</span>
-              <span className="fire-text">SHETHRA</span>
+              <span className="fire-text text-slate-50">SHETHRA</span>
             </h3>
             <p className="text-gray-400 mb-6">
               The premier technology symposium bringing together innovators and tech enthusiasts.
@@ -79,15 +75,8 @@ const Footer = () => {
               Join our newsletter to receive updates about TechShethra events and announcements.
             </p>
             <form className="flex">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-grow bg-white/10 border border-white/20 rounded-l-lg p-2 focus:outline-none focus:border-gold"
-              />
-              <button 
-                type="submit"
-                className="btn-gold px-4 rounded-r-lg font-bold"
-              >
+              <input type="email" placeholder="Enter your email" className="flex-grow bg-white/10 border border-white/20 rounded-l-lg p-2 focus:outline-none focus:border-gold" />
+              <button type="submit" className="btn-gold px-4 rounded-r-lg font-bold">
                 Subscribe
               </button>
             </form>
@@ -108,15 +97,9 @@ const Footer = () => {
         </div>
       </div>
       
-      <button
-        onClick={scrollToTop}
-        className="fixed bottom-8 right-8 p-3 bg-gold text-black rounded-full hover:bg-amber-400 transition-all z-50"
-        aria-label="Scroll to top"
-      >
+      <button onClick={scrollToTop} className="fixed bottom-8 right-8 p-3 bg-gold text-black rounded-full hover:bg-amber-400 transition-all z-50" aria-label="Scroll to top">
         <ArrowUp size={20} />
       </button>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
