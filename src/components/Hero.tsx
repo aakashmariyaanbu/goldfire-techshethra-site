@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { ArrowRight } from 'lucide-react';
 
 const Hero = () => {
-  const eventDate = new Date('2025-08-15T09:00:00');
+  const eventDate = new Date('2025-05-09T09:00:00');
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -39,7 +39,7 @@ const Hero = () => {
       <div className="container mx-auto relative z-20 text-center pt-20">
         <div className="mb-6">
           <span className="inline-block px-4 py-1 rounded-full bg-white/10 backdrop-blur-sm text-gold text-sm font-semibold mb-4">
-            August 15-17, 2025 • Tech Innovation Center
+            May 9, 2025 • Tech Innovation Center
           </span>
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-orbitron font-bold mb-4">
             <span className="text-white">TECH</span>

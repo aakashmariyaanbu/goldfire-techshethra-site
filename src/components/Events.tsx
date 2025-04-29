@@ -16,8 +16,8 @@ const eventsList = [
     title: 'AI & Machine Learning Hackathon',
     category: 'competitions',
     image: 'https://images.unsplash.com/photo-1485163819542-13adeb5e0068?auto=format&fit=crop&w=800&q=80',
-    description: 'Build innovative solutions using AI and ML technologies in this 24-hour coding marathon.',
-    date: 'August 15, 09:00 AM',
+    description: 'Build innovative solutions using AI and ML technologies in this 8-hour coding marathon.',
+    time: '09:00 AM - 17:00 PM',
     venue: 'Innovation Lab'
   },
   {
@@ -26,7 +26,7 @@ const eventsList = [
     category: 'workshops',
     image: 'https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&w=800&q=80',
     description: 'Learn the fundamentals of blockchain technology and create your first smart contract.',
-    date: 'August 15, 02:00 PM',
+    time: '10:30 AM - 12:30 PM',
     venue: 'Workshop Hall A'
   },
   {
@@ -35,7 +35,7 @@ const eventsList = [
     category: 'competitions',
     image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=800&q=80',
     description: 'Test your security skills in this CTF competition featuring real-world scenarios.',
-    date: 'August 16, 10:00 AM',
+    time: '13:00 PM - 16:00 PM',
     venue: 'Security Zone'
   },
   {
@@ -44,7 +44,7 @@ const eventsList = [
     category: 'talks',
     image: 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=800&q=80',
     description: 'Industry experts discuss emerging technologies that will shape our future.',
-    date: 'August 16, 04:00 PM',
+    time: '14:00 PM - 15:30 PM',
     venue: 'Main Auditorium'
   },
   {
@@ -53,7 +53,7 @@ const eventsList = [
     category: 'technical',
     image: 'https://images.unsplash.com/photo-1535378917042-10a22c95931a?auto=format&fit=crop&w=800&q=80',
     description: 'Hands-on session on building decentralized applications for the next web era.',
-    date: 'August 17, 09:30 AM',
+    time: '09:30 AM - 11:30 AM',
     venue: 'Dev Center'
   },
   {
@@ -62,7 +62,7 @@ const eventsList = [
     category: 'competitions',
     image: 'https://images.unsplash.com/photo-1552664688-cf412ec27db2?auto=format&fit=crop&w=800&q=80',
     description: 'Present your tech startup idea to a panel of investors and industry leaders.',
-    date: 'August 17, 02:00 PM',
+    time: '15:00 PM - 17:00 PM',
     venue: 'Business Hub'
   }
 ];
@@ -82,7 +82,7 @@ const Events = () => {
             Featured <span className="fire-text">Events</span>
           </h2>
           <p className="text-lg text-gray-300 max-w-3xl mx-auto">
-            Dive into a world of innovation with our diverse range of events, 
+            Join us on May 9, 2025 for a full day of innovation with our diverse range of events, 
             from hands-on workshops to intense competitions.
           </p>
 
@@ -125,7 +125,7 @@ const Events = () => {
                 <h3 className="text-xl font-bold mb-2">{event.title}</h3>
                 <p className="text-gray-400 text-sm mb-4">{event.description}</p>
                 <div className="text-sm text-gray-300 mb-4">
-                  <div className="mb-1">📅 {event.date}</div>
+                  <div className="mb-1">🕒 {event.time}</div>
                   <div>📍 {event.venue}</div>
                 </div>
                 <button className="flex items-center text-gold hover:text-amber-400 font-medium transition-colors">
