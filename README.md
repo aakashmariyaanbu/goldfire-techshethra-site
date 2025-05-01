@@ -1,73 +1,114 @@
-# Welcome to your Lovable project
+# TechShethra - Technical Symposium Website
 
-## Project info
+TechShethra is a modern website for a technical symposium event featuring information about events, schedules, speakers, and registration functionality.
 
-**URL**: https://lovable.dev/projects/13382ac8-bcf6-4083-8445-29de6ab4ea49
+## Project Structure
 
-## How can I edit this code?
+- **Frontend**: React with TypeScript, Vite, and Shadcn UI components
+- **Backend**: Node.js, Express, and MongoDB
 
-There are several ways of editing your application.
+## Features
 
-**Use Lovable**
+- Responsive design with dark theme
+- Event listings and details
+- Schedule display by day
+- Speaker profiles
+- Registration system
+- Contact form
+- Admin capabilities (coming soon)
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/13382ac8-bcf6-4083-8445-29de6ab4ea49) and start prompting.
+## Technologies Used
 
-Changes made via Lovable will be committed automatically to this repo.
+### Frontend
+- React with TypeScript
+- Vite as build tool
+- Tailwind CSS for styling
+- Shadcn UI components (based on Radix UI)
+- React Router for navigation
+- React Query for data fetching
+- Zod for validation
 
-**Use your preferred IDE**
+### Backend
+- Node.js
+- Express.js
+- MongoDB with Mongoose
+- JSON Web Token (JWT) for authentication
+- bcrypt for password hashing
+- Joi for validation
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## Getting Started
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Prerequisites
 
-Follow these steps:
+- Node.js (v14 or later)
+- MongoDB (local or Atlas)
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### Installation and Setup
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+1. Clone the repository:
+   ```
+   git clone <repository-url>
+   cd goldfire-techshethra-site
+   ```
 
-# Step 3: Install the necessary dependencies.
-npm i
+2. Install frontend dependencies:
+   ```
+   npm install
+   ```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+3. Install backend dependencies:
+   ```
+   cd backend
+   npm install
+   ```
+
+4. Configure environment variables:
+   - Create a `.env` file in the backend directory with the following:
+     ```
+     PORT=5000
+     MONGODB_URI=mongodb://localhost:27017/techshethra
+     JWT_SECRET=your_jwt_secret_key_should_be_long_and_complex
+     NODE_ENV=development
+     ```
+
+5. Seed the database with sample data (optional):
+   ```
+   npm run seed
+   ```
+
+### Running the Application
+
+1. Start the backend server (from the backend directory):
+   ```
+   npm run dev
+   ```
+
+2. Start the frontend development server (from the project root):
+   ```
+   npm run dev
+   ```
+
+3. Open your browser and navigate to `http://localhost:5173`
+
+## Project Structure
+
+```
+goldfire-techshethra-site/
+├── src/                  # Frontend source code
+│   ├── components/       # React components
+│   ├── pages/            # Page components
+│   ├── lib/              # Utility functions
+│   └── hooks/            # Custom React hooks
+├── backend/              # Backend source code
+│   ├── src/              # Backend source code
+│   │   ├── config/       # Configuration files
+│   │   ├── controllers/  # Request handlers
+│   │   ├── models/       # Database models
+│   │   └── routes/       # API routes
+│   └── .env              # Environment variables
+└── public/               # Static assets
 ```
 
-**Edit a file directly in GitHub**
+## API Documentation
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/13382ac8-bcf6-4083-8445-29de6ab4ea49) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+The backend provides a RESTful API for managing events, schedules, registrations, speakers, sponsors, and contact submissions. For detailed API documentation, please refer to the [backend README](./backend/README.md).

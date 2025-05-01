@@ -1,5 +1,6 @@
-import React from 'react';
-import { Clock, MapPin } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Clock, MapPin, Calendar } from 'lucide-react';
+
 const scheduleData = [{
   id: 1,
   time: '08:30 - 09:00',
@@ -64,6 +65,7 @@ const scheduleData = [{
   location: 'Main Auditorium',
   category: 'ceremony'
 }];
+
 const getCategoryColor = category => {
   switch (category) {
     case 'workshop':
@@ -82,10 +84,38 @@ const getCategoryColor = category => {
       return 'bg-white/10 text-white';
   }
 };
+
 const Schedule = () => {
-  return <section id="schedule" className="section bg-[#0e0e10] text-white">
+  const [expandedItem, setExpandedItem] = useState<number | null>(null);
+  const scheduleRef = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('show');
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    
+    const animatedElements = document.querySelectorAll('.schedule-item');
+    animatedElements.forEach(el => observer.observe(el));
+    
+    return () => {
+      animatedElements.forEach(el => observer.unobserve(el));
+    };
+  }, []);
+  
+  const toggleExpand = (id: number) => {
+    setExpandedItem(expandedItem === id ? null : id);
+  };
+
+  return <section id="schedule" ref={scheduleRef} className="section bg-[#0e0e10] text-white overflow-hidden">
       <div className="container mx-auto">
-        <div className="mb-16 text-center">
+        <div className="mb-12 md:mb-16 text-center animate-fade-in">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             Event <span className="fire-text text-slate-50">Schedule</span>
           </h2>
@@ -94,36 +124,70 @@ const Schedule = () => {
           </p>
         </div>
 
-        <div className="bg-black/30 backdrop-blur-md rounded-xl p-4 md:p-8">
+        <div className="bg-black/30 backdrop-blur-md rounded-xl p-4 md:p-8 shadow-xl shadow-black/20">
           <div className="flex items-center justify-center mb-8">
-            <div className="px-6 py-3 rounded-full bg-gradient-fire text-white">
-              <span className="font-bold">May 9, 2025</span>
+            <div className="flex items-center space-x-2 bg-gradient-fire text-white px-6 py-3 rounded-full shadow-lg shadow-amber-500/20">
+              <Calendar size={18} className="mr-2" />
+              <span className="font-bold whitespace-nowrap">Friday, May 9, 2025</span>
             </div>
           </div>
           
-          {scheduleData.map(item => <div key={item.id} className="mb-6 p-4 md:p-6 rounded-lg bg-white/5 hover:bg-white/10 transition-colors flex flex-col md:flex-row md:items-center gap-4 md:gap-6">
-              <div className="md:w-1/5">
-                <div className="flex items-center text-gold mb-2">
-                  <Clock size={16} className="mr-2" />
-                  <span>{item.time}</span>
+          <div className="space-y-4 md:space-y-6">
+            {scheduleData.map((item, index) => (
+              <div 
+                key={item.id} 
+                className={`schedule-item opacity-0 translate-y-[20px] transition-all duration-700 mb-4 md:mb-6 p-4 md:p-6 rounded-lg bg-white/5 hover:bg-white/10 transition-colors ${
+                  expandedItem === item.id ? 'shadow-lg shadow-black/40' : ''
+                }`}
+                style={{ transitionDelay: `${index * 0.1}s` }}
+                onClick={() => toggleExpand(item.id)}
+              >
+                <div className="flex flex-col lg:flex-row lg:items-center gap-4 md:gap-6">
+                  <div className="lg:w-1/5">
+                    <div className="flex items-center text-gold mb-2">
+                      <Clock size={16} className="mr-2 flex-shrink-0" />
+                      <span>{item.time}</span>
+                    </div>
+                    <div className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${getCategoryColor(item.category)}`}>
+                      {item.category.charAt(0).toUpperCase() + item.category.slice(1)}
+                    </div>
+                  </div>
+                  
+                  <div className="lg:w-3/5">
+                    <h3 className="text-xl font-bold mb-1">{item.title}</h3>
+                    {item.speaker && <p className="text-gray-300">Speaker: {item.speaker}</p>}
+                    
+                    {expandedItem === item.id && (
+                      <div className="mt-4 text-sm text-gray-400 animate-fade-in">
+                        <p>Join us for this exciting {item.category} event! Participants will engage in 
+                        hands-on activities and gain valuable insights from industry professionals.</p>
+                        <div className="mt-2 flex items-center">
+                          <span className="text-gold mr-2">📝</span>
+                          <span>{item.category === 'workshop' ? 'Bring your laptop' : 
+                                item.category === 'competition' ? 'Prizes worth ₹10,000' : 
+                                'Open to all participants'}</span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="lg:w-1/5 flex items-center text-gray-400">
+                    <MapPin size={16} className="mr-2 flex-shrink-0" />
+                    <span>{item.location}</span>
+                  </div>
                 </div>
-                <div className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${getCategoryColor(item.category)}`}>
-                  {item.category.charAt(0).toUpperCase() + item.category.slice(1)}
-                </div>
               </div>
-              
-              <div className="md:w-3/5">
-                <h3 className="text-xl font-bold mb-1">{item.title}</h3>
-                {item.speaker && <p className="text-gray-300">Speaker: {item.speaker}</p>}
-              </div>
-              
-              <div className="md:w-1/5 flex items-center text-gray-400">
-                <MapPin size={16} className="mr-2 flex-shrink-0" />
-                <span>{item.location}</span>
-              </div>
-            </div>)}
+            ))}
+          </div>
+        </div>
+        
+        <div className="text-center mt-8 animate-fade-in">
+          <p className="text-gray-400 text-sm">
+            * Schedule is subject to change. Please check back for updates.
+          </p>
         </div>
       </div>
     </section>;
 };
+
 export default Schedule;

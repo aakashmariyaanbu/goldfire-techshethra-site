@@ -1,7 +1,8 @@
-import React from 'react';
 import { Calendar, Clock, Users } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Link } from "react-router-dom";
+
 const Registration = () => {
   return <section id="registration" className="section bg-[#121215] text-white">
       <div className="container mx-auto">
@@ -44,9 +45,17 @@ const Registration = () => {
                 <Input id="role" placeholder="Your professional role" className="bg-white/5 border-white/10 text-white placeholder:text-gray-500" />
               </div>
               
-              <button type="submit" className="btn-gold w-full py-3 rounded-full font-bold text-black hover:bg-amber-400 transition-all duration-300">
-                Register Now
-              </button>
+              <Link to="/student/register" className="block">
+                <button type="button" className="btn-gold w-full py-3 rounded-full font-bold text-black hover:bg-amber-400 transition-all duration-300">
+                  Register Now
+                </button>
+              </Link>
+              
+              <div className="text-center mt-2">
+                <p className="text-gray-400">
+                  Already have an account? <Link to="/student/login" className="text-gold hover:underline">Login here</Link>
+                </p>
+              </div>
             </form>
           </div>
           

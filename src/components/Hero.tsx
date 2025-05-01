@@ -1,89 +1,201 @@
-
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const Hero = () => {
-  const eventDate = new Date('2025-05-09T09:00:00');
-  const [timeLeft, setTimeLeft] = useState({
+  const [countdown, setCountdown] = useState({
     days: 0,
     hours: 0,
     minutes: 0,
     seconds: 0
   });
-
+  
+  const [isLoaded, setIsLoaded] = useState(false);
+  const heroRef = useRef<HTMLDivElement>(null);
+  
+  // Set the event date (change as needed)
+  const eventDate = new Date('2025-05-09T09:00:00');
+  
   useEffect(() => {
-    const calculateTimeLeft = () => {
-      const difference = +eventDate - +new Date();
-      if (difference > 0) {
-        setTimeLeft({
-          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-          hours: Math.floor(difference / (1000 * 60 * 60) % 24),
-          minutes: Math.floor(difference / 1000 / 60 % 60),
-          seconds: Math.floor(difference / 1000 % 60)
+    const calculateCountdown = () => {
+      const now = new Date();
+      const difference = eventDate.getTime() - now.getTime();
+      
+      if (difference <= 0) {
+        // Event has started
+        setCountdown({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+        return;
+      }
+      
+      const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+      
+      setCountdown({ days, hours, minutes, seconds });
+    };
+    
+    // Calculate immediately and then every second
+    calculateCountdown();
+    const interval = setInterval(calculateCountdown, 1000);
+    
+    // Animation timing
+    setTimeout(() => {
+      setIsLoaded(true);
+    }, 500);
+    
+    // Parallax effect on scroll
+    const handleScroll = () => {
+      if (heroRef.current) {
+        const scrollValue = window.scrollY;
+        const parallaxElements = heroRef.current.querySelectorAll('.parallax');
+        
+        parallaxElements.forEach((el, index) => {
+          const speed = 0.1 + (index * 0.05);
+          (el as HTMLElement).style.transform = `translateY(${scrollValue * speed}px)`;
         });
       }
     };
-    calculateTimeLeft();
-    const timer = setInterval(calculateTimeLeft, 1000);
-    return () => clearInterval(timer);
+    
+    window.addEventListener('scroll', handleScroll);
+    
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
-  return <div className="min-h-screen relative flex flex-col items-center justify-center text-white px-4 lg:px-8">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-black/95 to-black z-10 rounded-none"></div>
-      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7')] bg-cover bg-center opacity-30"></div>
+  return (
+    <section 
+      ref={heroRef}
+      className="relative min-h-screen flex items-center text-white overflow-hidden"
+    >
+      {/* Animated Background */}
+      <div className="absolute inset-0 bg-[#0e0e10] overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-[#0e0e10]"></div>
+        
+        {/* Animated Orbs */}
+        <div className="absolute top-[10%] left-[5%] w-64 h-64 rounded-full bg-purple-500/10 blur-3xl animate-float-staggered-1 parallax"></div>
+        <div className="absolute bottom-[30%] right-[15%] w-96 h-96 rounded-full bg-gold/10 blur-3xl animate-float-staggered-2 parallax"></div>
+        <div className="absolute top-[40%] right-[10%] w-40 h-40 rounded-full bg-red-500/10 blur-3xl animate-float-staggered-3 parallax"></div>
+      </div>
       
-      {/* Content */}
-      <div className="container mx-auto relative z-20 text-center pt-20">
-        <div className="mb-6">
-          <span className="inline-block px-4 py-1 rounded-full bg-white/10 backdrop-blur-sm text-gold text-sm font-semibold mb-4">
-            May 9, 2025 • Tech Innovation Center
-          </span>
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-orbitron font-bold mb-4">
-            <span className="text-amber-500">TECH</span>
-            <span className="bg-gradient-to-r from-[#FF4500] via-[#FFA500] to-[#FFD700] bg-clip-text text-transparent">SHETHRA</span>
-          </h1>
-          <p className="text-xl md:text-2xl lg:text-3xl text-gray-300 max-w-3xl mx-auto mb-8">
-            Igniting Innovation • Fueling the Future of Technology
-          </p>
-        </div>
-        
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
-          <button className="btn-gold rounded-full px-8 py-3 text-lg font-bold flex items-center gap-2 animate-pulse-glow">
-            Register Now <ArrowRight size={18} />
-          </button>
-          <button className="bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 transition-all duration-300 rounded-full px-8 py-3 text-lg font-bold">
-            Explore Events
-          </button>
-        </div>
-        
-        <div className="flex flex-wrap justify-center gap-4 mt-12 mb-16">
-          <div className="countdown-item">
-            <div className="text-3xl md:text-4xl font-bold text-gold">{timeLeft.days}</div>
-            <div className="text-sm">Days</div>
+      {/* Main Content */}
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* Text Content */}
+          <div className="text-center lg:text-left">
+            <div 
+              className={`overflow-hidden transition-all duration-1000 ${
+                isLoaded ? 'opacity-100' : 'opacity-0 transform translate-y-10'
+              }`}
+            >
+              <span className="inline-block px-4 py-1 rounded-full bg-gold/20 text-gold text-sm font-bold mb-4 animate-pulse-slow">
+                May 9, 2025 at 9:00 AM
+              </span>
+            </div>
+            
+            <div className="overflow-hidden">
+              <h1 
+                className={`text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-4 transition-all duration-1000 delay-100 ${
+                  isLoaded ? 'opacity-100 transform-none' : 'opacity-0 transform translate-y-10'
+                }`}
+              >
+                <span className="inline-block bg-gradient-to-r from-amber-200 via-gold to-amber-600 bg-clip-text text-transparent animate-gradient-x">
+                  TECHSHETHRA
+                  2025
+                </span>
+              </h1>
+            </div>
+            
+            <div 
+              className={`transition-all duration-1000 delay-300 ${
+                isLoaded ? 'opacity-100 transform-none' : 'opacity-0 transform translate-y-10'
+              }`}
+            >
+              <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto lg:mx-0">
+                Join us for the ultimate tech fest with competitions, workshops, hackathons, and more, 
+                featuring a fantastic lineup of speakers and amazing prizes!
+              </p>
+            </div>
+            
+            <div 
+              className={`flex flex-wrap gap-4 justify-center lg:justify-start transition-all duration-1000 delay-500 ${
+                isLoaded ? 'opacity-100 transform-none' : 'opacity-0 transform translate-y-10'
+              }`}
+            >
+              <a 
+                href="#events" 
+                className="btn-gold px-8 py-3 rounded-full font-bold inline-flex items-center hover:scale-105 transition-transform relative overflow-hidden group"
+              >
+                <span className="relative z-10">Explore Events</span>
+                <ArrowRight className="ml-2 relative z-10 group-hover:translate-x-1 transition-transform" />
+                <span className="absolute inset-0 bg-gradient-to-r from-amber-500 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+              </a>
+              
+              <a 
+                href="/student/register" 
+                className="bg-white/10 px-8 py-3 rounded-full font-bold inline-flex items-center hover:bg-white/20 transition-colors text-white"
+              >
+                Register Now
+              </a>
+            </div>
+            
+            {/* Countdown */}
+            <div 
+              className={`mt-12 transition-all duration-1000 delay-700 ${
+                isLoaded ? 'opacity-100 transform-none' : 'opacity-0 transform translate-y-10'
+              }`}
+            >
+              <h3 className="text-xl mb-4 text-center lg:text-left">Event Starts In:</h3>
+              <div className="flex justify-center lg:justify-start gap-3 md:gap-4">
+                <div className="countdown-item animate-float-staggered-1">
+                  <div className="text-2xl md:text-3xl font-bold">{countdown.days}</div>
+                  <div className="text-xs md:text-sm text-gray-400">Days</div>
+                </div>
+                <div className="countdown-item animate-float-staggered-2">
+                  <div className="text-2xl md:text-3xl font-bold">{countdown.hours}</div>
+                  <div className="text-xs md:text-sm text-gray-400">Hours</div>
+                </div>
+                <div className="countdown-item animate-float-staggered-3">
+                  <div className="text-2xl md:text-3xl font-bold">{countdown.minutes}</div>
+                  <div className="text-xs md:text-sm text-gray-400">Minutes</div>
+                </div>
+                <div className="countdown-item animate-float-staggered-4">
+                  <div className="text-2xl md:text-3xl font-bold">{countdown.seconds}</div>
+                  <div className="text-xs md:text-sm text-gray-400">Seconds</div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="countdown-item">
-            <div className="text-3xl md:text-4xl font-bold text-gold">{timeLeft.hours}</div>
-            <div className="text-sm">Hours</div>
-          </div>
-          <div className="countdown-item">
-            <div className="text-3xl md:text-4xl font-bold text-gold">{timeLeft.minutes}</div>
-            <div className="text-sm">Minutes</div>
-          </div>
-          <div className="countdown-item">
-            <div className="text-3xl md:text-4xl font-bold text-gold">{timeLeft.seconds}</div>
-            <div className="text-sm">Seconds</div>
+          
+          {/* 3D/Visual Element */}
+          <div 
+            className={`flex justify-center items-center transition-all duration-1000 delay-300 ${
+              isLoaded ? 'opacity-100 transform-none' : 'opacity-0 transform translate-x-10'
+            }`}
+          >
+            <div className="relative w-full max-w-md flex justify-center items-center">
+              {/* Logo as main element with glow effects */}
+              <motion.div 
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 1, delay: 0.5 }}
+                whileHover={{ scale: 1.05 }}
+                className="w-96 h-96 flex items-center justify-center relative z-10"
+              >
+                <img 
+                  src="/logo.png" 
+                  alt="TechShethra Logo" 
+                  className="w-full h-full object-contain drop-shadow-[0_0_15px_rgba(251,191,36,0.8)]"
+                />
+              </motion.div>
+            </div>
           </div>
         </div>
       </div>
-      
-      {/* Wave divider - positioned lower so it doesn't hide the timer */}
-      <div className="absolute bottom-0 left-0 w-full overflow-hidden z-20">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 220" className="w-full h-auto">
-          <path fill="#0e0e10" fillOpacity="1" d="M0,224L48,224C96,224,192,224,288,186.7C384,149,480,75,576,74.7C672,75,768,149,864,176C960,203,1056,181,1152,154.7C1248,128,1344,96,1392,80L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
-        </svg>
-      </div>
-    </div>;
+    </section>
+  );
 };
 
 export default Hero;
