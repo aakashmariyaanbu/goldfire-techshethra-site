@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { ChevronRight } from 'lucide-react';
-import axios from 'axios';
+import { publicApi } from '../services/api';
 
 const eventCategories = [{
   id: 'all',
@@ -52,7 +52,7 @@ const Events = () => {
     const fetchEvents = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://localhost:5000/api/events');
+        const response = await publicApi.get('/api/events');
         setEvents(response.data);
         setError(null);
       } catch (err) {

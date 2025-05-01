@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { adminApi } from '../services/api';
 import { Loader2, CheckCircle, XCircle, Filter, Search, Download, RefreshCw, Eye, Edit, Trash, AlertTriangle } from 'lucide-react';
 
 import AdminHeader from '../components/admin/AdminHeader';
@@ -117,14 +117,10 @@ const AdminRegistrations = () => {
       const prevCount = registrations.length;
       
       // Fetch all registrations
-      const regResponse = await axios.get('http://localhost:5000/api/registration', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
+      const regResponse = await adminApi.get('/api/registration');
       
       // Fetch all events for filtering
-      const eventsResponse = await axios.get('http://localhost:5000/api/events', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
+      const eventsResponse = await adminApi.get('/api/events');
       
       // Check for new registrations
       const newRegs = regResponse.data;
@@ -338,8 +334,8 @@ const AdminRegistrations = () => {
       setUpdating(true);
       const token = localStorage.getItem('adminToken');
       
-      const response = await axios.put(
-        `http://localhost:5000/api/registration/${selectedRegistration._id}`,
+      const response = await adminApi.put(
+        `/api/registration/${selectedRegistration._id}`,
         {
           registrationStatus: editRegistrationStatus,
           paymentStatus: editPaymentStatus
@@ -382,8 +378,8 @@ const AdminRegistrations = () => {
       setDeleting(true);
       const token = localStorage.getItem('adminToken');
       
-      await axios.delete(
-        `http://localhost:5000/api/registration/${selectedRegistration._id}`,
+      await adminApi.delete(
+        `/api/registration/${selectedRegistration._id}`,
         {
           headers: { 'Authorization': `Bearer ${token}` }
         }

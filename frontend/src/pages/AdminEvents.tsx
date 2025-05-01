@@ -13,9 +13,10 @@ import {
   DollarSign,
   Users,
   AlertCircle,
-  Info
+  Info,
+  CheckCircle
 } from 'lucide-react';
-import axios from 'axios';
+import { adminApi } from '../services/api';
 
 import AdminHeader from '../components/admin/AdminHeader';
 import AdminSidebar from '../components/admin/AdminSidebar';
@@ -56,6 +57,7 @@ interface Event {
   eventType: string;
   registrationFee: number;
   image: string;
+  qrCode?: string;
   isTeamEvent: boolean;
   teamSize: {
     min: number;
@@ -73,6 +75,7 @@ interface FormErrors {
   date?: string;
   location?: string;
   image?: string;
+  qrCode?: string;
   maxTeamSize?: string;
   price?: string;
   capacity?: string;
@@ -96,6 +99,7 @@ const AdminEvents = () => {
     eventType: 'competition',
     registrationFee: 0,
     image: '',
+    qrCode: '',
     isTeamEvent: false,
     capacity: 50,
     teamSize: {
@@ -113,6 +117,17 @@ const AdminEvents = () => {
     fetchEvents();
   }, []);
 
+  // Show/hide QR code field based on registration fee
+  useEffect(() => {
+    // If registration fee is set to 0 and we have errors for QR code, clear them
+    if (formData.registrationFee === 0 && formErrors.qrCode) {
+      setFormErrors({
+        ...formErrors,
+        qrCode: undefined
+      });
+    }
+  }, [formData.registrationFee]);
+
   const fetchEvents = async () => {
     try {
       setLoading(true);
@@ -123,11 +138,7 @@ const AdminEvents = () => {
         return;
       }
       
-      const response = await axios.get('http://localhost:5000/api/events', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      const response = await adminApi.get('/api/events');
       
       // Transform backend response to match frontend Event interface if needed
       const transformedEvents = response.data.map((event: any) => ({
@@ -139,6 +150,7 @@ const AdminEvents = () => {
         eventType: event.eventType,
         registrationFee: event.registrationFee || 0,
         image: event.image,
+        qrCode: event.qrCode || '',
         isTeamEvent: event.isTeamEvent || false,
         teamSize: event.teamSize || { min: 1, max: 1 },
         capacity: event.capacity || 50,
@@ -213,6 +225,7 @@ const AdminEvents = () => {
       eventType: 'competition',
       registrationFee: 0,
       image: '',
+      qrCode: '',
       isTeamEvent: false,
       capacity: 50,
       teamSize: {
@@ -273,6 +286,12 @@ const AdminEvents = () => {
       errors.capacity = "Capacity must be a valid number greater than 0";
     }
     
+    if (formData.registrationFee > 0 && !formData.qrCode?.trim()) {
+      errors.qrCode = "QR code is required for paid events";
+    } else if (formData.qrCode && !isValidUrl(formData.qrCode)) {
+      errors.qrCode = "Please enter a valid URL for QR code";
+    }
+    
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -301,6 +320,7 @@ const AdminEvents = () => {
       eventType: event.eventType || 'competition',
       registrationFee: event.registrationFee || 0,
       image: event.image || '',
+      qrCode: event.qrCode || '',
       isTeamEvent: event.isTeamEvent || false,
       capacity: event.capacity || 50,
       teamSize: {
@@ -332,6 +352,7 @@ const AdminEvents = () => {
         title: formData.title,
         description: formData.description,
         image: formData.image,
+        qrCode: formData.qrCode,
         eventType: formData.eventType,
         capacity: isNaN(formData.capacity) ? 50 : formData.capacity,
         registrationFee: isNaN(formData.registrationFee) ? 0 : formData.registrationFee,
@@ -346,11 +367,7 @@ const AdminEvents = () => {
         isActive: true
       };
       
-      await axios.post('http://localhost:5000/api/events', eventData, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      await adminApi.post('/api/events', eventData);
       
       toast({
         title: "Success",
@@ -383,6 +400,7 @@ const AdminEvents = () => {
         title: formData.title,
         description: formData.description,
         image: formData.image,
+        qrCode: formData.qrCode,
         eventType: formData.eventType,
         capacity: isNaN(formData.capacity) ? 50 : formData.capacity,
         registrationFee: isNaN(formData.registrationFee) ? 0 : formData.registrationFee,
@@ -397,11 +415,7 @@ const AdminEvents = () => {
         isActive: true
       };
       
-      await axios.put(`http://localhost:5000/api/events/${currentEvent._id}`, eventData, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      await adminApi.put(`/api/events/${currentEvent._id}`, eventData);
       
       toast({
         title: "Success",
@@ -429,11 +443,7 @@ const AdminEvents = () => {
       setIsSubmitting(true);
       const token = localStorage.getItem('adminToken');
       
-      await axios.delete(`http://localhost:5000/api/events/${currentEvent._id}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      await adminApi.delete(`/api/events/${currentEvent._id}`);
       
       toast({
         title: "Success",
@@ -518,6 +528,7 @@ const AdminEvents = () => {
                     <th className="p-4 font-bold text-gray-800">Date</th>
                     <th className="p-4 font-bold text-gray-800">Location</th>
                     <th className="p-4 font-bold text-gray-800">Price</th>
+                    <th className="p-4 font-bold text-gray-800">QR Code</th>
                     <th className="p-4 font-bold text-gray-800">Team Event</th>
                     <th className="p-4 text-right font-bold text-gray-800">Actions</th>
                   </tr>
@@ -569,6 +580,37 @@ const AdminEvents = () => {
                             <DollarSign size={14} className="mr-1 text-gray-500" />
                             {event.registrationFee === 0 ? 'Free' : `₹${event.registrationFee}`}
                           </div>
+                        </td>
+                        <td className="p-4">
+                          {event.qrCode ? (
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <div className="flex items-center text-green-700 font-medium cursor-pointer">
+                                    <CheckCircle size={14} className="mr-1" />
+                                    <span>Available</span>
+                                  </div>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <div className="p-1">
+                                    <img 
+                                      src={event.qrCode} 
+                                      alt="Payment QR" 
+                                      className="w-32 h-32 object-contain"
+                                      onError={(e) => {
+                                        const target = e.target as HTMLImageElement;
+                                        target.src = "https://via.placeholder.com/200x200?text=Invalid+QR";
+                                      }}
+                                    />
+                                  </div>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          ) : (
+                            <div className={event.registrationFee > 0 ? "text-red-500 font-medium" : "text-gray-700 font-medium"}>
+                              {event.registrationFee > 0 ? "Missing" : "Not needed"}
+                            </div>
+                          )}
                         </td>
                         <td className="p-4">
                           {event.isTeamEvent ? (
@@ -773,6 +815,41 @@ const AdminEvents = () => {
                 onChange={handleInputChange}
               />
             </div>
+            
+            {formData.registrationFee > 0 && (
+              <div className="col-span-2">
+                <Label htmlFor="qrCode" className="flex items-center justify-between">
+                  Payment QR Code URL
+                  {formErrors.qrCode && (
+                    <span className="text-red-400 text-xs">{formErrors.qrCode}</span>
+                  )}
+                </Label>
+                <div className="grid grid-cols-2 gap-4">
+                  <Input
+                    id="qrCode"
+                    name="qrCode"
+                    placeholder="Enter payment QR code URL"
+                    className={`bg-gray-700 border-gray-600 mt-1 ${formErrors.qrCode ? 'border-red-400' : ''}`}
+                    value={formData.qrCode}
+                    onChange={handleInputChange}
+                  />
+                  {formData.qrCode && (
+                    <div className="flex items-center justify-center border border-gray-600 rounded-md p-2 bg-gray-900">
+                      <img 
+                        src={formData.qrCode} 
+                        alt="Payment QR Code Preview" 
+                        className="max-h-24 object-contain"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = "https://via.placeholder.com/200x200?text=Invalid+QR";
+                        }}
+                      />
+                    </div>
+                  )}
+                </div>
+                <p className="text-gray-400 text-xs mt-1">QR code is required for paid events</p>
+              </div>
+            )}
             
             <div className="flex items-center space-x-2">
               <input
@@ -995,6 +1072,41 @@ const AdminEvents = () => {
                 onChange={handleInputChange}
               />
             </div>
+            
+            {formData.registrationFee > 0 && (
+              <div className="col-span-2">
+                <Label htmlFor="edit-qrCode" className="flex items-center justify-between">
+                  Payment QR Code URL
+                  {formErrors.qrCode && (
+                    <span className="text-red-400 text-xs">{formErrors.qrCode}</span>
+                  )}
+                </Label>
+                <div className="grid grid-cols-2 gap-4">
+                  <Input
+                    id="edit-qrCode"
+                    name="qrCode"
+                    placeholder="Enter payment QR code URL"
+                    className={`bg-gray-700 border-gray-600 mt-1 ${formErrors.qrCode ? 'border-red-400' : ''}`}
+                    value={formData.qrCode}
+                    onChange={handleInputChange}
+                  />
+                  {formData.qrCode && (
+                    <div className="flex items-center justify-center border border-gray-600 rounded-md p-2 bg-gray-900">
+                      <img 
+                        src={formData.qrCode} 
+                        alt="Payment QR Code Preview" 
+                        className="max-h-24 object-contain"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = "https://via.placeholder.com/200x200?text=Invalid+QR";
+                        }}
+                      />
+                    </div>
+                  )}
+                </div>
+                <p className="text-gray-400 text-xs mt-1">QR code is required for paid events</p>
+              </div>
+            )}
             
             <div className="flex items-center space-x-2">
               <input

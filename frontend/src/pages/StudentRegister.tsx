@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
+import { publicApi } from '../services/api';
 
 import { Button } from '../components/ui/button';
 import {
@@ -74,8 +74,8 @@ export default function StudentRegister() {
       setIsLoading(true);
       const { confirmPassword, ...registerData } = values;
       
-      const response = await axios.post(
-        'http://localhost:5000/api/students/register',
+      const response = await publicApi.post(
+        '/api/students/register',
         registerData
       );
 

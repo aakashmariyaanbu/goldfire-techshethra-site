@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { publicApi, api } from '../services/api';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -133,7 +133,7 @@ const EventRegistration = () => {
     const fetchEventDetails = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:5000/api/events/${eventId}`);
+        const response = await publicApi.get(`/api/events/${eventId}`);
         setEvent(response.data);
         
         // Just check login status without auto-filling
@@ -154,7 +154,7 @@ const EventRegistration = () => {
 
     const fetchSiteSettings = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/admin/settings/public');
+        const response = await publicApi.get('/api/admin/settings/public');
         setSiteSettings(response.data);
       } catch (err) {
         console.error('Error fetching site settings:', err);
@@ -291,8 +291,8 @@ const EventRegistration = () => {
       const token = localStorage.getItem('studentToken');
       
       // Submit registration
-      const response = await axios.post(
-        'http://localhost:5000/api/students/events/register',
+      const response = await api.post(
+        '/api/students/events/register',
         formData,
         {
           headers: {

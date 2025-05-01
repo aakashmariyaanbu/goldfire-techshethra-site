@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { adminApi } from '../services/api';
 import { toast } from '@/components/ui/use-toast';
 import { 
   Save, 
@@ -81,9 +81,7 @@ const AdminSettings = () => {
         return;
       }
       
-      const response = await axios.get('http://localhost:5000/api/admin/settings', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
+      const response = await adminApi.get('/api/admin/settings');
       
       setSettings(response.data);
     } catch (error) {
@@ -124,9 +122,7 @@ const AdminSettings = () => {
       setSaving(true);
       const token = localStorage.getItem('adminToken');
       
-      await axios.put('http://localhost:5000/api/admin/settings', settings, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
+      await adminApi.put('/api/admin/settings', settings);
       
       toast({
         title: "Success",

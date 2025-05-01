@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import axios from 'axios';
+import { publicApi } from '../services/api';
 import { ChevronLeft, Calendar, MapPin, Users, Clock, Award, Ticket, Share2 } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -47,7 +47,7 @@ const EventDetail = () => {
     const fetchEvent = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:5000/api/events/${eventId}`);
+        const response = await publicApi.get(`/api/events/${eventId}`);
         setEvent(response.data);
         setError(null);
       } catch (err) {

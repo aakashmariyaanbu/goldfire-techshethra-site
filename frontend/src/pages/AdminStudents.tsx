@@ -13,7 +13,7 @@ import {
   AlertCircle,
   Eye
 } from 'lucide-react';
-import axios from 'axios';
+import { adminApi } from '../services/api';
 
 import AdminHeader from '../components/admin/AdminHeader';
 import AdminSidebar from '../components/admin/AdminSidebar';
@@ -82,11 +82,7 @@ const AdminStudents = () => {
         return;
       }
       
-      const response = await axios.get('http://localhost:5000/api/students', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      const response = await adminApi.get('/api/students');
       
       setStudents(response.data);
     } catch (error) {
@@ -105,11 +101,7 @@ const AdminStudents = () => {
     try {
       const token = localStorage.getItem('adminToken');
       
-      await axios.put(`http://localhost:5000/api/students/${studentId}/verify`, {}, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      await adminApi.put(`/api/students/${studentId}/verify`);
       
       toast({
         title: "Success",
@@ -133,11 +125,7 @@ const AdminStudents = () => {
     try {
       const token = localStorage.getItem('adminToken');
       
-      await axios.delete(`http://localhost:5000/api/students/${currentStudent._id}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      await adminApi.delete(`/api/students/${currentStudent._id}`);
       
       toast({
         title: "Success",

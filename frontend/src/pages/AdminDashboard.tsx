@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { adminApi } from '../services/api';
 
 // Admin components
 import AdminHeader from '@/components/admin/AdminHeader';
@@ -60,11 +60,7 @@ const AdminDashboard = () => {
         return;
       }
       
-      const response = await axios.get('http://localhost:5000/api/admin/dashboard', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      const response = await adminApi.get('/api/admin/dashboard');
       
       setStats(response.data);
       setError('');
